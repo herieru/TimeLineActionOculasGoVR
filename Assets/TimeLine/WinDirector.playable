@@ -112,7 +112,7 @@ MonoBehaviour:
   m_OpenClipOffsetPosition: {x: 0, y: 0, z: 0}
   m_OpenClipOffsetEulerAngles: {x: 0, y: 0, z: 0}
   m_OpenClipTimeOffset: 0
-  m_MatchTargetFields: 63
+  m_MatchTargetFields: 56
   m_Position: {x: 0, y: 0, z: 0}
   m_EulerAngles: {x: 0, y: 0, z: 0}
   m_ApplyOffsets: 1

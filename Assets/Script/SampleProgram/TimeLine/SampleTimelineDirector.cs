@@ -34,7 +34,7 @@ public class SampleTimelineDirector : MonoBehaviour
     public PlayableDirector lose_ver;
 
 
-    private bool is_win_select;
+    public bool is_win_select;
 
     private void OnGUI()
     {
@@ -65,6 +65,11 @@ public class SampleTimelineDirector : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.B))
         {
             is_win_select = false;
+        }
+
+        if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+        {
+            is_win_select = !is_win_select;
         }
     }
 
