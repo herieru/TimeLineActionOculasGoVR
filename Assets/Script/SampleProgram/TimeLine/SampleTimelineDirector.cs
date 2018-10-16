@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class SampleTimelineDirector : MonoBehaviour
 {
@@ -34,6 +35,13 @@ public class SampleTimelineDirector : MonoBehaviour
     public PlayableDirector lose_ver;
 
 
+    public PlayableAsset win;
+
+    public PlayableAsset lose;
+
+    public Text text;
+
+
     public bool is_win_select;
 
     private void OnGUI()
@@ -45,7 +53,6 @@ public class SampleTimelineDirector : MonoBehaviour
         }
 
         GUILayout.Label("is_win_select:" + is_win_select);
-
     }
 
 
@@ -53,6 +60,8 @@ public class SampleTimelineDirector : MonoBehaviour
     void Start()
     {
         is_win_select = true;
+
+        first_time_line.stopped += CheakEvent;
     }
 
     // Update is called once per frame
@@ -67,31 +76,49 @@ public class SampleTimelineDirector : MonoBehaviour
             is_win_select = false;
         }
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            first_time_line.Stop();
+            first_time_line.time = 0;
+            first_time_line.Play();
+        }        
+
+        //OculasGo用のキー
         if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
         {
             is_win_select = !is_win_select;
+        }
+
+        if(OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+        {
+            first_time_line.time = 0;
+            first_time_line.Play();
         }
     }
 
     /// <summary>
     /// イベント発生をチェックする。
     /// </summary>
-    public void CheakEvent()
+    public void CheakEvent(PlayableDirector _director)
     {
+        text.text = "イベントチェックに来たよ";
         Debug.Log("EventCheakにきたよ");
+        first_time_line.Stop();
         if(is_win_select)
         {
-            Debug.Log("Winがながれるはず");
-            win_ver.enabled = true;
-            win_ver.time = 0;
-            win_ver.Play();
+            win_ver.Play(win,DirectorWrapMode.Hold);
         }
         else
         {
-            Debug.Log("Loseが流れるはず");
-            lose_ver.enabled = true;
-            lose_ver.time = 0;
-            lose_ver.Play();
+            lose_ver.Play(lose,DirectorWrapMode.None);
         }
+       // EndAnimation();
     }
+
+    private void EndAnimation()
+    {
+        first_time_line.time = first_time_line.duration;
+    }
+
+
 }
