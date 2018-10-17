@@ -25,6 +25,8 @@ using UnityEngine.UI;
 
 public class SampleTimelineDirector : MonoBehaviour
 {
+    public sampleEventTrigger cheakEvent;
+
     //最初に再生を行うためのDirector
     public PlayableDirector first_time_line;
 
@@ -67,13 +69,31 @@ public class SampleTimelineDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(cheakEvent.CheackActive())
+        {
+            //text.text = "ok";
+        }
+        else
+        {
+           // text.text = "ng";
+        }
+
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             is_win_select = true;
+            if (cheakEvent.CheackActive())
+            {
+                text.text += "チェックできてる";
+            }
         }
         else if(Input.GetKeyDown(KeyCode.B))
         {
             is_win_select = false;
+            if (false == cheakEvent.CheackActive())
+            {
+                text.text += "チェック体制は動いている";
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
@@ -87,6 +107,11 @@ public class SampleTimelineDirector : MonoBehaviour
         if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
         {
             is_win_select = !is_win_select;
+
+            if(cheakEvent.CheackActive())
+            {
+                text.text += "チェックできてる";
+            }
         }
 
         if(OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
@@ -97,7 +122,7 @@ public class SampleTimelineDirector : MonoBehaviour
     }
 
     /// <summary>
-    /// イベント発生をチェックする。
+    /// イベント発生をチェックする。 Endによる発注
     /// </summary>
     public void CheakEvent(PlayableDirector _director)
     {
@@ -106,13 +131,42 @@ public class SampleTimelineDirector : MonoBehaviour
         first_time_line.Stop();
         if(is_win_select)
         {
-            win_ver.Play(win,DirectorWrapMode.Hold);
+            //win_ver.Play(win,DirectorWrapMode.Hold);
+            win_ver.playableAsset = win;           
+            win_ver.stopped += a_part;
+            win_ver.Play();
         }
         else
         {
             lose_ver.Play(lose,DirectorWrapMode.None);
         }
        // EndAnimation();
+    }
+
+    public void a_part(PlayableDirector _director)
+    {
+        Debug.Log("a_partが呼ばれたよ");
+        text.text = "a_part呼ばれた";
+        first_time_line.time = 0;
+        first_time_line.Play();
+    }
+
+    public void checkevent()
+    {
+        text.text = "イベントチェックに来たよ";
+        Debug.Log("EventCheakにきたよ");
+        first_time_line.Stop();
+        if (is_win_select)
+        {
+            win_ver.Play(win, DirectorWrapMode.Hold);
+            first_time_line.time = 0;
+            first_time_line.Play();
+        }
+        else
+        {
+            lose_ver.Play(lose, DirectorWrapMode.None);
+        }
+        // EndAnimation();
     }
 
     private void EndAnimation()
