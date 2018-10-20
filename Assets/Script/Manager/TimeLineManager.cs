@@ -28,11 +28,48 @@ namespace TimeLine
         [SerializeField]
         private TimeLineReference reference;
 
+        /// <summary>
+        /// ひとまず適当に作ったもの
+        /// </summary>
+        [SerializeField]
+        PlayableAsset right_move;
+
+        // ひとまず適当
+        [SerializeField]
+        PlayableAsset left_move;
+
+        [SerializeField]
+        private PlayableDirector left_move_director;
 
 
+        [SerializeField]
+        private PlayableDirector right_move_director;
+
+        public void Update()
+        {
+            if( 
+                //PC　と　Oculas用のTrigger用のボタン
+                Input.GetKeyDown(KeyCode.F) ||
+                OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)
+                )
+            {
+              // reference.next_time_line.playableAsset = right_move;
+                //動的にバインド
 
 
+                reference.next_time_line.Play(right_move, DirectorWrapMode.Hold);
+                //UnityEditor.EditorApplication.isPaused = true;
+                //left_move_director.Play();
+            }
+
+            if(
+                Input.GetKeyDown(KeyCode.G)
+                )
+            {
+
+                reference.next_time_line.Play(left_move, DirectorWrapMode.Hold);
+               // right_move_director.Play();
+            }
+        }
     }
 }
-
-    
