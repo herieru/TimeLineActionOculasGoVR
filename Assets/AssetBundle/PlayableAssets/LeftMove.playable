@@ -228,13 +228,13 @@ MonoBehaviour:
   m_Version: 1
   m_OpenClipPreExtrapolation: 1
   m_OpenClipPostExtrapolation: 1
-  m_OpenClipOffsetPosition: {x: 0.0023206125, y: 0, z: 0.0036914505}
-  m_OpenClipOffsetEulerAngles: {x: 0, y: 0.0000034150962, z: 0}
+  m_OpenClipOffsetPosition: {x: 0, y: 0, z: 0}
+  m_OpenClipOffsetEulerAngles: {x: 0, y: 0, z: 0}
   m_OpenClipTimeOffset: 0
-  m_MatchTargetFields: 56
+  m_MatchTargetFields: 63
   m_Position: {x: 0, y: 0, z: 0}
   m_EulerAngles: {x: 0, y: 0, z: 0}
-  m_ApplyOffsets: 0
+  m_ApplyOffsets: 1
   m_AvatarMask: {fileID: 0}
   m_ApplyAvatarMask: 1
   m_OpenClipOffsetRotation: {x: 0, y: 0, z: 0, w: 1}
