@@ -44,17 +44,19 @@ public class OVRHeadsetEmulator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		bool emulationActivated = IsEmulationActivated();
-		if (emulationActivated)
+		if (true || emulationActivated)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
 
+            //何かしらのリセット機構？
 			if (!lastFrameEmulationActivated && resetHmdPoseOnRelease)
 			{
 				manager.headPoseRelativeOffsetTranslation = recordedHeadPoseRelativeOffsetTranslation;
 				manager.headPoseRelativeOffsetRotation = recordedHeadPoseRelativeOffsetRotation;
 			}
 
-			if (resetHmdPoseByMiddleMouseButton && Input.GetMouseButton(2))
+            //マウスボタンでのリセット
+            if (resetHmdPoseByMiddleMouseButton && Input.GetMouseButton(2))
 			{
 				manager.headPoseRelativeOffsetTranslation = Vector3.zero;
 				manager.headPoseRelativeOffsetRotation = Vector3.zero;
@@ -87,7 +89,7 @@ public class OVRHeadsetEmulator : MonoBehaviour {
 				manager.headPoseRelativeOffsetRotation = new Vector3(emulatedRoll, emulatedYaw, emulatedPitch);
 			}
 
-			if (!hasSentEvent)
+			if (hasSentEvent)
 			{
 				OVRPlugin.SendEvent("headset_emulator", "activated");
 				hasSentEvent = true;
@@ -111,6 +113,11 @@ public class OVRHeadsetEmulator : MonoBehaviour {
 		lastFrameEmulationActivated = emulationActivated;
 	}
 
+
+    /// <summary>
+    /// エミュレートするか？　かな？
+    /// </summary>
+    /// <returns></returns>
 	bool IsEmulationActivated()
 	{
 		if (opMode == OpMode.Off)

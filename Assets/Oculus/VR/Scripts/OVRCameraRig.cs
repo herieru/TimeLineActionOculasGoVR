@@ -129,6 +129,7 @@ public class OVRCameraRig : MonoBehaviour
 
 	protected virtual void UpdateAnchors()
 	{
+		//整合性の確保
 		EnsureGameObjectIntegrity();
 
 		if (!Application.isPlaying)
@@ -176,6 +177,7 @@ public class OVRCameraRig : MonoBehaviour
 		}
 	}
 
+	
 	public virtual void EnsureGameObjectIntegrity()
 	{
 		bool monoscopic = OVRManager.instance != null ? OVRManager.instance.monoscopic : false;

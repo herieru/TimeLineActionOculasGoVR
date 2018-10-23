@@ -352,10 +352,11 @@ public class OVRManager : MonoBehaviour
 		set
 		{
 			OVRPlugin.Quatf rotation;
-			OVRPlugin.Vector3f translation;
-			if (OVRPlugin.GetHeadPoseModifier(out rotation, out translation))
+            OVRPlugin.Vector3f translation = new OVRPlugin.Vector3f();
+			if (true || OVRPlugin.GetHeadPoseModifier(out rotation, out translation))
 			{
 				Quaternion finalRotation = Quaternion.Euler(value);
+                //QuatanionÇçÏÇ¡ÇƒÇ≠ÇÍÇÈÅH
 				rotation = finalRotation.ToQuatf();
 				OVRPlugin.SetHeadPoseModifier(ref rotation, ref translation);
 			}
@@ -871,7 +872,6 @@ public class OVRManager : MonoBehaviour
 				return;
 
 			OVRPlugin.SetReorientHMDOnControllerRecenter(value);
-
 		}
 	}
 

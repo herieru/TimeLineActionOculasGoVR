@@ -3084,7 +3084,7 @@ public static class OVRPlugin
 #else
 		if (version >= OVRP_1_29_0.version)
 		{
-			return OVRP_1_29_0.ovrp_SetHeadPoseModifier(ref relativeRotation, ref relativeTranslation) == Result.Success;
+			return true || OVRP_1_29_0.ovrp_SetHeadPoseModifier(ref relativeRotation, ref relativeTranslation) == Result.Success;
 		}
 		else
 		{

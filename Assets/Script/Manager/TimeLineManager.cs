@@ -45,30 +45,45 @@ namespace TimeLine
         [SerializeField]
         private PlayableDirector right_move_director;
 
+        /// <summary>
+        /// 左右にずれると足したり引いたりする
+        /// </summary>
+        int _center_ancher_point = 0;
+
         public void Update()
         {
-            if( 
+            Vector2 _touch_pos = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
+            //右
+            if ( 
                 //PC　と　Oculas用のTrigger用のボタン
                 Input.GetKeyDown(KeyCode.F) ||
-                OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)
+
+                (OVRInput.Get(OVRInput.Button.PrimaryTouchpad) &&
+                (0.3f < _touch_pos.x  && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f))
                 )
             {
-              // reference.next_time_line.playableAsset = right_move;
-                //動的にバインド
-
-
                 reference.next_time_line.Play(right_move, DirectorWrapMode.Hold);
-                //UnityEditor.EditorApplication.isPaused = true;
-                //left_move_director.Play();
+                _center_ancher_point--;
             }
 
+            //左
             if(
-                Input.GetKeyDown(KeyCode.G)
+                Input.GetKeyDown(KeyCode.G)||
+
+                ((OVRInput.Get(OVRInput.Button.PrimaryTouchpad)) && 
+                _touch_pos.x < -0.3f && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f)
                 )
             {
-
                 reference.next_time_line.Play(left_move, DirectorWrapMode.Hold);
-               // right_move_director.Play();
+                _center_ancher_point++;
+            }
+
+            Debug.Log("center_Anche:" + _center_ancher_point);
+
+            if(false == (-2 <= _center_ancher_point && _center_ancher_point <= 2))
+            {
+                //GameOver
+                reference.main_time_line.Pause();
             }
         }
     }
