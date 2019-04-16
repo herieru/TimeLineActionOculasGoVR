@@ -45,6 +45,9 @@ namespace TimeLine
         [SerializeField]
         private PlayableDirector right_move_director;
 
+        [SerializeField]
+        private UnityEngine.UI.Text text;
+
         /// <summary>
         /// 左右にずれると足したり引いたりする
         /// </summary>
@@ -54,37 +57,62 @@ namespace TimeLine
         {
             Vector2 _touch_pos = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
             //右
-            if ( 
+            if (
                 //PC　と　Oculas用のTrigger用のボタン
-                Input.GetKeyDown(KeyCode.F) ||
-
-                (OVRInput.Get(OVRInput.Button.PrimaryTouchpad) &&
-                (0.3f < _touch_pos.x  && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f))
+#if UNITY_EDITOR
+                Input.GetKeyDown(KeyCode.F) 
+#else
+                (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) &&
+                (0.1f < _touch_pos.x  && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f))
+#endif
                 )
             {
-                reference.next_time_line.Play(right_move, DirectorWrapMode.Hold);
+                if(reference.next_time_line.state == PlayState.Playing)
+                {
+                    return;
+                }
+
+                reference.next_time_line.Play(right_move, DirectorWrapMode.None);
                 _center_ancher_point--;
             }
 
             //左
             if(
-                Input.GetKeyDown(KeyCode.G)||
-
-                ((OVRInput.Get(OVRInput.Button.PrimaryTouchpad)) && 
-                _touch_pos.x < -0.3f && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f)
+#if UNITY_EDITOR
+                Input.GetKeyDown(KeyCode.G)
+#else
+                ((OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad)) && 
+                _touch_pos.x < -0.1f && -0.5f < _touch_pos.y && _touch_pos.y < 0.5f)
+#endif
                 )
             {
-                reference.next_time_line.Play(left_move, DirectorWrapMode.Hold);
+                if(reference.next_time_line.state == PlayState.Playing)
+                {
+                    return;
+                }
+                //Noneにすることで、Playing状態が解除される。っぽい挙動をとっている。
+                reference.next_time_line.Play(left_move, DirectorWrapMode.None);
                 _center_ancher_point++;
             }
 
             Debug.Log("center_Anche:" + _center_ancher_point);
+            text.text = "現在の位置；" + _center_ancher_point;
 
-            if(false == (-2 <= _center_ancher_point && _center_ancher_point <= 2))
+            if(false == (-1 <= _center_ancher_point && _center_ancher_point <= 1))
             {
                 //GameOver
                 reference.main_time_line.Pause();
             }
+        }
+
+
+        /// <summary>
+        /// 障害物が当たってしまった。
+        /// </summary>
+        public void commet_hit()
+        {
+            Debug.Log("あたったよ");
+            reference.main_time_line.time = 0;
         }
     }
 }
